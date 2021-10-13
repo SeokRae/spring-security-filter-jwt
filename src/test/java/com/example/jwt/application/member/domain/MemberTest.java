@@ -25,7 +25,6 @@ class MemberTest {
         Member actual = Member.of("seokrae@gmail.com", "1234");
 
         actual.encode(passwordEncoder);
-
         boolean matches = passwordEncoder.matches("1234", actual.getPassword());
 
         assertThat(matches).isTrue();

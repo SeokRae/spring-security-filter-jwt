@@ -47,4 +47,5 @@ class MemberServiceImplTest {
         assertThatExceptionOfType(DuplicateMemberException.class)
                 .isThrownBy(() -> memberService.signUpMember(reqSaveMember));
     }
+
 }

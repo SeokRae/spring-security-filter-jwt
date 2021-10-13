@@ -11,7 +11,8 @@ def jacocoExclude = [
         '**/SecurityFilterJwtApplication.class',
         '**/*Exception.class',
         '**/Req*.class',
-        '**/Res*.class'
+        '**/Res*.class',
+        '**/*Config.java'
 
 ]
 
