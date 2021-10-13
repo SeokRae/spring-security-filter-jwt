@@ -15,3 +15,11 @@
 
 ![Security Filter Jwt Authentication Authorization Flow](docs/images/flow_AuthenticationFlow.png)
 
+
+## SonarCloud
+
+> JWT 토큰 사용으로 CSRF 토큰 Disable 시 Security 이슈
+
+- [Make sure disabling Spring Security's CSRF protection is safe here.](https://sonarcloud.io/project/security_hotspots?id=spring-org_spring-security-filter-jwt&pullRequest=3)
+
+

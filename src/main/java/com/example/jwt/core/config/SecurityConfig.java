@@ -24,8 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .csrf().disable()
-                .csrf().ignoringAntMatchers("/**")
-                .and()
                 .formLogin().disable()
                 .logout().disable()
                 .headers().frameOptions().disable()
