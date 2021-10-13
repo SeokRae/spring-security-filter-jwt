@@ -8,7 +8,8 @@ test {
 }
 
 def jacocoExclude = [
-        '**/SecurityFilterJwtApplication.class'
+        '**/SecurityFilterJwtApplication.class',
+        '**/*Exception.class'
 
 ]
 

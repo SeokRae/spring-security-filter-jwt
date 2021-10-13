@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SecurityFilterJwtApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SecurityFilterJwtApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SecurityFilterJwtApplication.class, args);
+    }
 
 }
