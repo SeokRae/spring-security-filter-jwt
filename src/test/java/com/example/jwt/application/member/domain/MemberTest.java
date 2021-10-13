@@ -1,5 +1,6 @@
 package com.example.jwt.application.member.domain;
 
+import com.example.jwt.application.member.controller.dto.ReqUpdateMember;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -34,8 +35,9 @@ class MemberTest {
     @Test
     void when_update_member_expect_success() {
         Member actual = Member.of("seokrae@gmail.com", "1234");
+        ReqUpdateMember updateMember = new ReqUpdateMember("4321", "seokrae");
 
-        actual.update("seokrae");
+        actual.update(passwordEncoder, updateMember);
 
         assertThat(actual.getUsername()).isEqualTo("seokrae");
     }
@@ -44,8 +46,9 @@ class MemberTest {
     @Test
     void when_update_member_expect_fail() {
         Member actual = Member.of("seokrae@gmail.com", "1234");
+        ReqUpdateMember updateMember = new ReqUpdateMember("", "");
 
-        actual = actual.update("");
+        actual = actual.update(passwordEncoder, updateMember);
 
         assertThat(actual.getUsername()).isBlank();
     }
