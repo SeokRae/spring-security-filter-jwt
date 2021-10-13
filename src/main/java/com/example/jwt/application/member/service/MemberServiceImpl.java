@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
             throw new DuplicateMemberException("이미 존재하는 사용자");
         }
         Member member = Member.of(reqSaveMember.getEmail(), reqSaveMember.getPassword()).encode(passwordEncoder);
-        return ResMember.of(memberRepository.save(member));
+        return ResMember.from(memberRepository.save(member));
     }
 
     @Transactional
@@ -39,13 +39,13 @@ public class MemberServiceImpl implements MemberService {
     public ResMember updateMember(String email, ReqUpdateMember updateMember) {
         Member findMember = memberRepository.findMemberByEmail(email).orElseThrow(RuntimeException::new);
         findMember.update(passwordEncoder, updateMember);
-        return ResMember.of(findMember);
+        return ResMember.from(findMember);
     }
 
     @Override
     public ResMember findMember(String email) {
         Member member = memberRepository.findMemberByEmail(email)
                 .orElseThrow(() -> new NotFoundMemberException("사용자가 존재하지 않습니다."));
-        return ResMember.of(member);
+        return ResMember.from(member);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.jwt.application.member.controller;
 
-import com.example.jwt.application.member.controller.dto.ReqLoginMember;
 import com.example.jwt.application.member.controller.dto.ReqSaveMember;
 import com.example.jwt.application.member.controller.dto.ResMember;
 import com.example.jwt.application.member.service.MemberService;
@@ -25,11 +24,5 @@ public class MemberController {
     public ResponseEntity<ResMember> signUp(@RequestBody ReqSaveMember reqSaveMember) {
         ResMember resMember = memberService.signUpMember(reqSaveMember);
         return ResponseEntity.status(HttpStatus.CREATED).body(resMember);
-    }
-
-    @PostMapping(value = "/login")
-    public ResponseEntity<ResMember> login(@RequestBody ReqLoginMember reqLoginMember) {
-        ResMember resMember = memberService.findMember(reqLoginMember.getEmail());
-        return ResponseEntity.status(HttpStatus.OK).body(resMember);
     }
 }
