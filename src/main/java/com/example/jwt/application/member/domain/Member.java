@@ -1,6 +1,7 @@
 package com.example.jwt.application.member.domain;
 
 import com.example.jwt.application.member.controller.dto.ReqUpdateMember;
+import io.jsonwebtoken.lang.Strings;
 import lombok.AccessLevel;
 import lombok.Generated;
 import lombok.Getter;
@@ -29,16 +30,6 @@ public class Member {
         this.password = password;
     }
 
-    private Member(String email, String password, String username) {
-        this.email = email;
-        this.password = password;
-        this.username = username;
-    }
-
-    public static Member from(Member member) {
-        return new Member(member.getEmail(), member.getPassword(), member.getUsername());
-    }
-
     public static Member of(String email, String password) {
         return new Member(email, password);
     }
@@ -49,10 +40,12 @@ public class Member {
     }
 
     public Member update(PasswordEncoder passwordEncoder, ReqUpdateMember updateMember) {
-        updateMember.isUsername()
-                .ifPresent(updatedUsername -> this.username = updatedUsername);
-        updateMember.isPassword()
-                .ifPresent(updatedPassword -> this.password = passwordEncoder.encode(updatedPassword));
+        if (Strings.hasText(updateMember.getUsername())) {
+            this.username = updateMember.getUsername();
+        }
+        if (Strings.hasText(updateMember.getPassword())) {
+            this.password = passwordEncoder.encode(updateMember.getPassword());
+        }
         return this;
     }
 
