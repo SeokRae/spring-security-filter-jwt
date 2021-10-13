@@ -6,6 +6,7 @@ import com.example.jwt.application.member.controller.dto.ResMember;
 import com.example.jwt.application.member.domain.Member;
 import com.example.jwt.application.member.domain.repository.MemberRepository;
 import com.example.jwt.application.member.exception.DuplicateMemberException;
+import com.example.jwt.application.member.exception.NotFoundMemberException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +40,12 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findMemberByEmail(email).orElseThrow(RuntimeException::new);
         findMember.update(passwordEncoder, updateMember);
         return ResMember.of(findMember);
+    }
+
+    @Override
+    public ResMember findMember(String email) {
+        Member member = memberRepository.findMemberByEmail(email)
+                .orElseThrow(() -> new NotFoundMemberException("사용자가 존재하지 않습니다."));
+        return ResMember.of(member);
     }
 }

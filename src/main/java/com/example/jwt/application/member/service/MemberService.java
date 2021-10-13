@@ -8,4 +8,6 @@ public interface MemberService {
     ResMember signUpMember(ReqSaveMember reqSaveMember);
 
     ResMember updateMember(String email, ReqUpdateMember updateMember);
+
+    ResMember findMember(String email);
 }
