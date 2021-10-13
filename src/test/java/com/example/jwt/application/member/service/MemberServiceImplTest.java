@@ -48,4 +48,9 @@ class MemberServiceImplTest {
                 .isThrownBy(() -> memberService.signUpMember(reqSaveMember));
     }
 
+    @DisplayName("사용자 정보 패스워드 및 사용자명 수정 테스트")
+    @Test
+    void when_update_member_expect_success() {
+
+    }
 }

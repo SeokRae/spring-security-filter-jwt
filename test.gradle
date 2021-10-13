@@ -13,7 +13,6 @@ def jacocoExclude = [
         '**/Req*.class',
         '**/Res*.class',
         '**/*Config.java'
-
 ]
 
 jacocoTestReport {

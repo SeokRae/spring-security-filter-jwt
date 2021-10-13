@@ -1,6 +1,7 @@
 package com.example.jwt.application.member.service;
 
 import com.example.jwt.application.member.controller.dto.ReqSaveMember;
+import com.example.jwt.application.member.controller.dto.ReqUpdateMember;
 import com.example.jwt.application.member.controller.dto.ResMember;
 import com.example.jwt.application.member.domain.Member;
 import com.example.jwt.application.member.domain.repository.MemberRepository;
@@ -30,5 +31,13 @@ public class MemberServiceImpl implements MemberService {
         }
         Member member = Member.of(reqSaveMember.getEmail(), reqSaveMember.getPassword()).encode(passwordEncoder);
         return ResMember.of(memberRepository.save(member));
+    }
+
+    @Transactional
+    @Override
+    public ResMember updateMember(String email, ReqUpdateMember updateMember) {
+        Member findMember = memberRepository.findMemberByEmail(email).orElseThrow(RuntimeException::new);
+        findMember.update(passwordEncoder, updateMember);
+        return ResMember.of(findMember);
     }
 }
