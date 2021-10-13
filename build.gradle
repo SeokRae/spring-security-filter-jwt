@@ -61,5 +61,10 @@ sonarqube {
 		property "sonar.projectKey", "spring-org_spring-security-filter-jwt"
 		property "sonar.organization", "spring-org"
 		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.sources", "src"
+		property "sonar.language", "java"
+		property "sonar.sourceEncoding", "UTF-8"
+		property "sonar.test.inclusions", "**/*Test.java"
+		property "sonar.exclusions", "**/SecurityFilterJwtApplication.java, **/*Exception.java, **/Req*.java, **/Res*.java"
 	}
 }

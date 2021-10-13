@@ -9,7 +9,9 @@ test {
 
 def jacocoExclude = [
         '**/SecurityFilterJwtApplication.class',
-        '**/*Exception.class'
+        '**/*Exception.class',
+        '**/Req*.class',
+        '**/Res*.class'
 
 ]
 
