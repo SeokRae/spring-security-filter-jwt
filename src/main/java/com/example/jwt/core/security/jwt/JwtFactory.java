@@ -1,12 +1,9 @@
 package com.example.jwt.core.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -17,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 public class JwtFactory {
 
@@ -35,9 +33,14 @@ public class JwtFactory {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isToken(String token, UserDetails userDetails) {
-        String email = extractEmail(token);
-        return email.equals(userDetails.getUsername());
+    public boolean isValidToken(String token) {
+        try {
+            extractAllClaims(token);
+            return true;
+        } catch (JwtException exception) {
+            log.error("JWT Exception");
+        }
+        return false;
     }
 
     private String createToken(HashMap<String, Object> claims, String email, int expiredTime) {
