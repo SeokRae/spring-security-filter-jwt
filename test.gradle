@@ -8,14 +8,18 @@ test {
 }
 
 def jacocoExclude = [
-        '**/SecurityFilterJwtApplication.class'
+        '**/SecurityFilterJwtApplication.class',
+        '**/*Exception.class',
+        '**/Req*.class',
+        '**/Res*.class',
+        '**/*Config.java'
 
 ]
 
 jacocoTestReport {
     reports {
         html.enabled true
-//        xml.enabled true
+        xml.enabled true
         // csv.enabled true
     }
     afterEvaluate {
