@@ -2,6 +2,7 @@ package com.example.jwt.core.config;
 
 import com.example.jwt.core.security.filter.JwtAuthenticationFilter;
 import com.example.jwt.core.security.filter.JwtAuthenticationProvider;
+import com.example.jwt.core.security.filter.JwtAuthorizationFilter;
 import com.example.jwt.core.security.jwt.JwtFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -71,7 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/members", "/api/members/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilter(authenticationFilter())
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, jwtFactory));
     }
 
     private JwtAuthenticationFilter authenticationFilter() throws Exception {
