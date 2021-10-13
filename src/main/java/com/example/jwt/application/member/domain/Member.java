@@ -1,11 +1,17 @@
 package com.example.jwt.application.member.domain;
 
+import lombok.AccessLevel;
 import lombok.Generated;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,9 +19,7 @@ public class Member {
     private Long id;
 
     private String email;
-
     private String password;
-
     private String username;
 
     private Member(String email, String password) {
@@ -27,7 +31,15 @@ public class Member {
         return new Member(email, password);
     }
 
-    public Member update() {
+    public Member encode(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
+        return this;
+    }
+
+    public Member update(String username) {
+        if (!username.isEmpty()) {
+            this.username = username;
+        }
         return this;
     }
 
