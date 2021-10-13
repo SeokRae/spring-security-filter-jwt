@@ -3,9 +3,9 @@ package com.example.jwt.application.member.controller.dto;
 
 import lombok.Getter;
 
-
+@Getter
 public class ReqLoginMember {
-    @Getter
+
     private final String email;
     private final String password;
 

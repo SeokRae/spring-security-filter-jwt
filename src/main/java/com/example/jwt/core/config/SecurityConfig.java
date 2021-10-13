@@ -1,28 +1,57 @@
 package com.example.jwt.core.config;
 
+import com.example.jwt.core.security.filter.JwtAuthenticationFilter;
+import com.example.jwt.core.security.filter.JwtAuthenticationProvider;
 import com.example.jwt.core.security.jwt.JwtFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsService userDetailsService;
     private final JwtFactory jwtFactory;
+    private final ObjectMapper mapper;
 
-    public SecurityConfig(JwtFactory jwtFactory) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtFactory jwtFactory, ObjectMapper mapper) {
+        this.userDetailsService = userDetailsService;
         this.jwtFactory = jwtFactory;
+        this.mapper = mapper;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        return new JwtAuthenticationProvider(userDetailsService, passwordEncoder());
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
     }
 
     @Override
@@ -39,6 +68,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers(HttpMethod.POST, "/api/members", "/api/members/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    private JwtAuthenticationFilter authenticationFilter() throws Exception {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), jwtFactory, mapper);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/api/members/login");
+        return jwtAuthenticationFilter;
     }
 }
